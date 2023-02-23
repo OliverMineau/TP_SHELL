@@ -16,13 +16,13 @@ void quitShell(char **cmd){
 }
 
 
-void commande(char **cmd, char *inNom, char *outNom, int *pipeP, int *pipeActu, int deb, int fin){
+void commande(char **cmd, char *inNom, char *outNom){
 	int pid;
 	int fd_out,fd_in;
 	int fd_term = dup(1);
 	
 	//Si on redirige la sortie
-	if(outNom && fin==1){
+	if(outNom){
 
 		//O_CREAT=Creer le fichier si inexistant
 		//0666 permission RDWR pour tout le mondech 
@@ -36,23 +36,10 @@ void commande(char **cmd, char *inNom, char *outNom, int *pipeP, int *pipeActu, 
 			fprintf(stderr,"Erreur de copie de la sortie\n");
 			return;
 		}
-	}else if (fin==0){
-
-		if(pipe(pipeActu)==-1){
-			fprintf(stderr,"Erreur lors de l'ouverture du pipe\n");
-			return;
-		}
-
-		//la sortie devient pipeActu[1](entree tube)
-		if(dup2(pipeActu[1],1)==-1){
-			fprintf(stderr,"Erreur de copie de l'entrée\n");
-			return;
-		}
-		Close(pipeActu[1]);
 	}
 
 	//Si on redirige l'entrée
-	if(inNom && deb==1){
+	if(inNom){
 
 		fd_in = open(inNom, O_RDONLY);
 
@@ -64,29 +51,16 @@ void commande(char **cmd, char *inNom, char *outNom, int *pipeP, int *pipeActu, 
 			fprintf(stderr,"Erreur de copie de l'entrée\n");
 			return;
 		}
-	}else if (deb==0){
-
-		//l'entree devient pipeP[0](sortie tube) car on a ecrit depuis pipeP[1](entree tube)
-		if(dup2(pipeP[0],0)==-1){
-			fprintf(stderr,"Erreur de copie de l'entrée\n");
-			return;
-		}
-		Close(pipeP[0]);
 	}
 
 	if((pid=Fork()) == 0){
 
-		if(inNom && deb==1){
+		if(inNom){
 			Close(fd_in);
 		}
-		if(outNom && fin==1){
+		if(outNom){
 			Close(fd_out);
 		}
-
-		if(deb==0){
-			Close(pipeP[1]);
-		}
-
 
 		execvp(cmd[0], cmd);
 
@@ -99,23 +73,17 @@ void commande(char **cmd, char *inNom, char *outNom, int *pipeP, int *pipeActu, 
 		Waitpid(pid,NULL,0);
 
 		//On ferme fd_out et ajoute le terminal en sortie
-		if(outNom && fin==1){
+		if(outNom){
 			Close(fd_out);
 		}
 		dup2(fd_term,1);
 
 		//On ferme fd_in et ajoute le terminal en entrée
-		if(inNom && deb==1){
+		if(inNom){
 			Close(fd_in);
 		}
 		dup2(fd_term,0);
 		Close(fd_term);
-
-		if(deb==0){
-			Close(pipeP[1]);
-		}
-
-
 	}
 }
 
@@ -158,36 +126,12 @@ int main()
 		printf("Nombre de commandes : %d\n",i);
 
 
-		/**pipePF (pipe Pere vers Fils)
-		 * pipePF[0] - On lit de là
-		 * pipePF[1] - On ecrit dessu
-		 */
-		int pipeActu[2];
-		int pipeP[2];
-
-		if(i>1 && pipe(pipeP)==-1){
-			fprintf(stderr,"Erreur lors de l'ouverture du pipe\n");
-			return 1;
-		}
-
-
 		//Pour chaque commande
-		for(int n = 0; n<i; n++){
+		for(int n = 0; n<1; n++){
 			
 			quitShell(l->seq[n]);
-			commande(l->seq[n], l->in, l->out,pipeP,pipeActu, (n==0?1:0),(n==(i-1)?1:0) );
+			commande(l->seq[n], l->in, l->out);
 
-			if(n < i-1){
-
-				pipeP[0]=pipeActu[0];
-				pipeP[1]=pipeActu[1];
-
-				if(pipe(pipeActu)==-1){
-					fprintf(stderr,"Erreur lors de l'ouverture du pipe\n");
-					return 1;
-				}
-				
-			}
 		}
 
 

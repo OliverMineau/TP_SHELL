@@ -1,3 +1,7 @@
+- Changer la creation de fichier dans fils et pas pere
+
+-commandes internes chdir putenv setenv 2 ou 3
+
 -Faire ./shell , si "./" alors on ajoute pwd avec un pipe
 
 -Couleur, faire une script qui prend la sortie et ajoute les symboles de couleurs autour des
