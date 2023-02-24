@@ -1,15 +1,10 @@
 
--commandes internes chdir putenv setenv 2 ou 3
-
--Faire ./shell , si "./" alors on ajoute pwd avec un pipe
+-commandes internes putenv setenv 2 ou 3
 
 -Couleur, faire une script qui prend la sortie et ajoute les symboles de couleurs autour des
 mots a changer
 
 -fleche du haut/bas garder les commandes dans une pile
-
--make file debug
-
 
 - probleme : On rencontre un probleme lorsqu'une commande est mal ecrite :
     cmd :  ls -l > fich | wc
