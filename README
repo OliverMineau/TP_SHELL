@@ -1,4 +1,3 @@
-- Changer la creation de fichier dans fils et pas pere
 
 -commandes internes chdir putenv setenv 2 ou 3
 
@@ -10,3 +9,10 @@ mots a changer
 -fleche du haut/bas garder les commandes dans une pile
 
 -make file debug
+
+
+- probleme : On rencontre un probleme lorsqu'une commande est mal ecrite :
+    cmd :  ls -l > fich | wc
+    ici notre programme devrait traiter les 2 commandes separement car la sortie de la premiere commande a ete redirigé sur un fichier et non sur le pipe.
+    Mais notre programme fait cette redirection des que possible donc sur la derniere commande (wc). Il l'a traite donc comme : ls -l | wc > fich.
+    Pour changer cette erreur il faudrait changer la structure cmdline.
