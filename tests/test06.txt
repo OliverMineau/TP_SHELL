@@ -1,0 +1,4 @@
+#
+# test06.txt - Tester plusieurs pipes et sortie fichier
+cd temp
+ls | grep .o | sort -r > sortieTest5.txt

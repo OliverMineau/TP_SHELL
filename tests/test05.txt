@@ -1,0 +1,4 @@
+#
+# test05.txt - Tester plusieurs pipes
+cd temp
+ls | grep .o | sort | tail -n 3

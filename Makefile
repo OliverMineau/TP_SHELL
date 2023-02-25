@@ -2,6 +2,7 @@ SRCDIR=./src
 OBJDIR=./temp
 INCLUDEDIR=./includes
 EXEC=shell
+TESTDIR=./tests
 
 SRCS=$(wildcard $(SRCDIR)/*.c)
 OBJS=$(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
@@ -10,7 +11,11 @@ ifndef DEBUG
 	DEBUG=0
 endif
 
-.PHONY: all, clean, init
+ifndef TEST
+	TEST=test01.txt
+endif
+
+.PHONY: all, clean, init, testAll, test
 
 # Disable implicit rules
 .SUFFIXES:
@@ -36,9 +41,18 @@ $(EXEC):$(OBJS)
 	$(CC) -o $@ $(LDFLAGS) $^ $(LIBS)
 
 
+test:
+	./sdriver.pl -t $(TESTDIR)/$(TEST) -s ./shell
+
+testAll:
+	for num in $(TESTDIR)/*; do\
+		./sdriver.pl -t $$num -s ./shell;\
+		echo;\
+	done
+
 init:
 	mkdir -p temp
 
 clean:
-	rm -f $(EXEC) $(OBJDIR)/*.o 
+	rm -f $(EXEC) $(OBJDIR)/*
 
