@@ -3,33 +3,35 @@
 #include "csapp.h"
 #include "redirection.h"
 
-void redirectionEntree(char *inNom, int *prevCmdPipe, int deb, int *fd_in){
+int redirectionEntree(char *inNom, int *prevCmdPipe, int deb, int *fd_in){
 	//Si on redirige l'entrée
 	if(inNom && deb==1){
 
 		*fd_in = open(inNom, O_RDONLY);
 
 		if(*fd_in==-1){
-			fprintf(stderr,"%s: No such file or directory\n",inNom);
-			return;
+			printf("%s: %s\n",inNom,strerror(errno));
+			return 1;
 		}
 		if(dup2(*fd_in,0)==-1){
 			fprintf(stderr,"Erreur de copie de l'entrée\n");
-			return;
+			return 1;
 		}
 	}else if (deb==0){
 
 		//l'entree devient pipeP[0](sortie tube) car on a ecrit depuis pipeP[1](entree tube)
 		if(dup2(prevCmdPipe[0],0)==-1){
 			fprintf(stderr,"Erreur de copie de l'entrée\n");
-			return;
+			return 1;
 		}
 		Close(prevCmdPipe[0]);
 	}
+
+	return 0;
 }
 
 
-void redirectionSortie(char *outNom, int *nextCmdPipe, int fin, int *fd_out){
+int redirectionSortie(char *outNom, int *nextCmdPipe, int fin, int deb, int *fd_out){
 	//Si on redirige la sortie
 	if(outNom && fin==1){
 
@@ -38,25 +40,27 @@ void redirectionSortie(char *outNom, int *nextCmdPipe, int fin, int *fd_out){
 		*fd_out = open(outNom, O_CREAT | O_RDWR, 0666);
 
 		if(*fd_out==-1){
-			fprintf(stderr,"%s: No such file or directory\n",outNom);
-			return;
+			printf("%s: %s\n",outNom,strerror(errno));
+			return 1;
 		}
 		if(dup2(*fd_out,1)==-1){
 			fprintf(stderr,"Erreur de copie de la sortie\n");
-			return;
+			return 1;
 		}
 	}else if (fin==0){
 
-		if(pipe(nextCmdPipe)==-1){
+		if(deb==1 && pipe(nextCmdPipe)==-1){
 			fprintf(stderr,"Erreur lors de l'ouverture du pipe\n");
-			return;
+			return 1;
 		}
 
-		//la sortie devient pipeActu[1](entree tube)
+		//la sortie devient nextCmdPipe[1](entree tube)
 		if(dup2(nextCmdPipe[1],1)==-1){
 			fprintf(stderr,"Erreur de copie de l'entrée\n");
-			return;
+			return 1;
 		}
 		Close(nextCmdPipe[1]);
 	}
+
+	return 0;
 }

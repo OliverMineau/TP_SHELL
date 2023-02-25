@@ -5,7 +5,7 @@
 #include "redirection.h"
 #include "externCmd.h"
 
-void commande(char **cmd, char *inNom, char *outNom, int pipes[2][2], int deb, int fin){
+int commandeExterne(char **cmd, char *inNom, char *outNom, int pipes[2][2], int deb, int fin){
 	int pid;
 	int fd_out,fd_in;
 	int fd_term = dup(1);
@@ -16,8 +16,8 @@ void commande(char **cmd, char *inNom, char *outNom, int pipes[2][2], int deb, i
 	int entreeOuverte = (inNom && deb==1);
 	int sortieOuverte = (outNom && fin==1);
 
-	redirectionEntree(inNom, prevCmdPipe, deb, &fd_in);
-	redirectionSortie(outNom, nextCmdPipe, fin, &fd_out);
+	if(redirectionEntree(inNom, prevCmdPipe, deb, &fd_in)==1) return 1;
+	if(redirectionSortie(outNom, nextCmdPipe, fin, deb, &fd_out)==1) return 1;
 
 	if((pid=Fork()) == 0){
 		//Fils
@@ -28,9 +28,6 @@ void commande(char **cmd, char *inNom, char *outNom, int pipes[2][2], int deb, i
 		if(sortieOuverte){
 			Close(fd_out);
 		}
-		if(deb==0){
-			Close(prevCmdPipe[1]);
-		}
 
 		if(execvp(cmd[0], cmd)==-1){
 			//execvp(cmd[0], cmd) == -1 si commande pas executée
@@ -40,8 +37,6 @@ void commande(char **cmd, char *inNom, char *outNom, int pipes[2][2], int deb, i
 
 	}else{
 		//Pere
-
-		Waitpid(pid,NULL,0);
 
 		//On ferme fd_out si on l'a ouvert et ajoute le terminal en sortie
 		if(sortieOuverte){
@@ -54,11 +49,11 @@ void commande(char **cmd, char *inNom, char *outNom, int pipes[2][2], int deb, i
 			Close(fd_in);
 		}
 		dup2(fd_term,0);
+
 		Close(fd_term);
 
-		//Si c'est une commande du milieu on ferme l'entree du pipe de la commande precedente
-		if(deb==0 && fin==0){
-			Close(prevCmdPipe[1]);
-		}
+		Waitpid(pid,NULL,0);
 	}
+
+	return 0;
 }

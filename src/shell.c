@@ -66,44 +66,32 @@ int main()
 		int *prevCmdPipe = pipes[0];
 		int *nextCmdPipe = pipes[1];
 
-		if(i>1 && pipe(prevCmdPipe)==-1){
-			fprintf(stderr,"Erreur lors de l'ouverture du pipe\n");
-			return 1;
-		}
-
 		//Pour chaque commande
 		for(int n = 0; n<i; n++){
 			
-			int resultat = commandeInterne(l,n);
-			if(resultat==0){
+			int resCmdInt = commandeInterne(l,n);
+			if(resCmdInt==0){
 				//Pas un commande interne
-				commande(l->seq[n], l->in, l->out,pipes, (n==0?1:0),(n==(i-1)?1:0));
-			}else if(resultat==-1){
-				//Commande interne qui ne peut pas etre suivie
-
-				if(i>1){
-					//Fermer le pipe ouvert
-					Close(prevCmdPipe[0]);
-					Close(prevCmdPipe[1]);
-				}
-				break;
+				if(commandeExterne(l->seq[n], l->in, l->out,pipes, (n==0?1:0),(n==(i-1)?1:0))==1) break;
 			}
+			//Commande interne qui ne peut pas etre suivie
+			else if(resCmdInt==-1) break;
+			
 			
 			//Si on a plus d'une commande, on créer un nouveau pipe et déplace l'ancien
-			if(n < i-1){
+			if(n+1 < i){
 				
 				//Deplace l'ancien pipe
 				prevCmdPipe[0]=nextCmdPipe[0];
 				prevCmdPipe[1]=nextCmdPipe[1];
 
-				if(pipe(nextCmdPipe)==-1){
+				//On cree un pipe seulement si ce n'est pas la derniere commande
+				if(n+1!=i && pipe(nextCmdPipe)==-1){
 					fprintf(stderr,"Erreur lors de l'ouverture du pipe\n");
 					return 1;
 				}
 				
 			}
 		}
-
-
 	}
 }

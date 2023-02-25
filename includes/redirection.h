@@ -2,8 +2,8 @@
 #define __REDIRECTION_H__
 
 
-void redirectionEntree(char *inNom, int *prevCmdPipe, int deb, int *fd_in);
-void redirectionSortie(char *outNom, int *nextCmdPipe, int fin, int *fd_out);
+int redirectionEntree(char *inNom, int *prevCmdPipe, int deb, int *fd_in);
+int redirectionSortie(char *outNom, int *nextCmdPipe, int fin, int deb, int *fd_out);
 
 
 #endif
