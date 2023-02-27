@@ -189,6 +189,7 @@ struct cmdline *readcmd(void)
 	s->in = 0;
 	s->out = 0;
 	s->seq = 0;
+	s->bg = 0;
 
 	i = 0;
 	while ((w = words[i++]) != 0) {
@@ -231,6 +232,17 @@ struct cmdline *readcmd(void)
 			cmd = xmalloc(sizeof(char *));
 			cmd[0] = 0;
 			cmd_len = 0;
+			break;
+		case '&':
+			/* Tricky : the word can only be "<" */
+			if (s->bg == 1) {
+				s->err = "only one background command supported";
+				goto error;
+			}
+			s->bg = 1;
+
+			//Ajouter Check fin
+
 			break;
 		default:
 			cmd = xrealloc(cmd, (cmd_len + 2) * sizeof(char *));

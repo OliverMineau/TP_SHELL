@@ -13,7 +13,11 @@ void printShellEnv(){
 	 */
 	char cwd[1024];
 	getcwd(cwd, sizeof(cwd));
-	printf("~%s$ ",cwd+strlen(getenv("HOME")));
+	int lenHome=strlen(getenv("HOME"));
+	if(strlen(cwd)>=lenHome)
+		printf("~%s$ ",cwd+lenHome);
+	else
+		printf("%s$ ",cwd);
 }
 
 void isQuitShell(struct cmdline *cmd, int n){
