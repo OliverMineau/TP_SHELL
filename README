@@ -1,4 +1,6 @@
 
+-commandes interne vers pipe : jobs | wc //ne marche pas encore
+
 -changer fleches pipes diagramme
 
 -commandes internes putenv setenv 2 ou 3

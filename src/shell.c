@@ -53,9 +53,9 @@ int gestionCommande(struct cmdline *l,int etat, Jobs *jobs){
 	//Pour chaque commande
 	for(int n = 0; n<i; n++){
 		
-		int resCmdInt = commandeInterne(l,n);
+		int resCmdInt = commandeInterne(l,n, jobs);
 		if(resCmdInt==0){
-			//Pas un commande interne
+			//Pas une commande interne
 			if(commandeExterne(l->seq[n], l->in, l->out,pipes, (n==0?1:0),(n==(i-1)?1:0))==1) break;
 		}
 		//Commande interne qui ne peut pas etre suivie
@@ -87,6 +87,7 @@ int gestionCommande(struct cmdline *l,int etat, Jobs *jobs){
 
 int main()
 {
+	FinJobs *finjobs=NULL;
 	Jobs *jobs=NULL;
 
 	Signal(SIGINT,ctrlCHandler);
@@ -122,19 +123,29 @@ int main()
 			if((pidBgCmd=Fork()) == 0){
 				gestionCommande(l,1,jobs);
 			}else{
-				addJob(&jobs,l->seq[0][0],pidBgCmd);
+				addJob(&jobs,l->seq[0],pidBgCmd,"Running");
 				printf("[%d] %d\n",jobs->num,jobs->pid);
 			}
 		}
 
+		//Si plusieurs morts en meme temps
 		int jobPidMort;
-		if((jobPidMort=waitpid(-1,NULL,WNOHANG))>0){
-			Jobs *d;
-			if((d=findJobByPID(jobs,jobPidMort))){
-				printf("[%d]+ Done                    %s\n",d->num,d->name);
-				deleteJob(&jobs,d);
-			}
+		while((jobPidMort=waitpid(-1,NULL,WNOHANG|WUNTRACED))>0){
+				if(findJobByPID(jobs,jobPidMort)){
+					addFinJob(&finjobs,jobPidMort);
+				}
 		}
+
+		while(finjobs!=NULL){
+			Jobs *d;
+			d=findJobByPID(jobs,finjobs->pid);
+
+			printf("[%d]+ Done                    %s\n",d->num,d->name);
+			deleteFinJob(&finjobs,finjobs->pid);
+			deleteJob(&jobs,d);
+			
+		}
+
 
 		#if DEBUG
 		printJobs(jobs);

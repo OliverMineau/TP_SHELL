@@ -56,7 +56,7 @@ int redirectionSortie(char *outNom, int *nextCmdPipe, int fin, int deb, int *fd_
 
 		//la sortie devient nextCmdPipe[1](entree tube)
 		if(dup2(nextCmdPipe[1],1)==-1){
-			fprintf(stderr,"Erreur de copie de l'entrée\n");
+			fprintf(stderr,"Erreur de copie de l'sortie\n");
 			return 1;
 		}
 		Close(nextCmdPipe[1]);

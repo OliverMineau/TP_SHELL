@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include "internCmd.h"
 #include "readcmd.h"
+#include "jobs.h"
 
 
 void printShellEnv(){
@@ -44,11 +45,20 @@ int isChangeDir(struct cmdline *cmd, int n){
 	return 0;
 }
 
-int commandeInterne(struct cmdline *cmd, int n){
+int isJobs(struct cmdline *cmd, int n, Jobs *jobs){
+	if(!strcmp("jobs",cmd->seq[n][0])){
+		printJobs(jobs);
+		return 1;
+	}
+	return 0;
+}
+
+int commandeInterne(struct cmdline *cmd, int n, Jobs *jobs){
 
     isQuitShell(cmd, n);
 	
 	if(isChangeDir(cmd, n)) return -1; //Aucune commande ne peut suivre cd
+	if(isJobs(cmd, n, jobs)) return 1; //Aucune commande ne peut suivre cd
 
 	return 0;
 }

@@ -22,6 +22,9 @@ int commandeExterne(char **cmd, char *inNom, char *outNom, int pipes[2][2], int 
 	if((pid=Fork()) == 0){
 		//Fils
 
+		//Mettre le handler par defaut
+		Signal(SIGTSTP,SIG_DFL);
+
 		if(entreeOuverte){
 			Close(fd_in);
 		}

@@ -3,6 +3,7 @@ OBJDIR=./temp
 INCLUDEDIR=./includes
 EXEC=shell
 TESTDIR=./tests
+DOXDIR=./doxygen
 
 SRCS=$(wildcard $(SRCDIR)/*.c)
 OBJS=$(SRCS:$(SRCDIR)/%.c=$(OBJDIR)/%.o)
@@ -52,6 +53,10 @@ testAll:
 
 init:
 	mkdir -p temp
+
+doxy:
+	doxygen $(DOXDIR)/doxy-convert.conf
+	cd $(DOXDIR)/latex;make;cp refman.pdf ../MINI_SHELL_DOC_MINEAU_THACH.pdf;
 
 clean:
 	rm -f $(EXEC) $(OBJDIR)/*
