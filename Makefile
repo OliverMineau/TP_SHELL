@@ -32,11 +32,8 @@ LIBS+=-lpthread
 
 all: init $(EXEC)
 
-$(OBJDIR)/shell.o: $(SRCDIR)/shell.c
-	$(CC) $(CFLAGS) -DDEBUG=$(DEBUG) -c -o $@ $<
-
 $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUDEDIR)/%.h
-	$(CC) $(CFLAGS) -c -o $@ $<
+	$(CC) $(CFLAGS) -DDEBUG=$(DEBUG) -c -o $@ $<
 
 $(EXEC):$(OBJS)
 	$(CC) -o $@ $(LDFLAGS) $^ $(LIBS)

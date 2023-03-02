@@ -13,6 +13,9 @@
  * 
  */
 
+enum state {RUNNING,STOPPED};
+enum ground {BACKGROUND,FOREGROUND};
+
 /**
  * @brief Structure comportant les informations sur un job.
  * @param name
@@ -25,28 +28,19 @@
  * Numéro du job.
  * @param next
  * Job suivant dans la liste.
+ * @param bg
+ * 1 si la commande est en background, 0 sinon.
  */
 typedef struct Jobs Jobs;
 struct Jobs {
     char *name;
-    char *state;
+    enum state state;
     int pid;
     int num;
+    enum ground ground;
     Jobs *next;
 };
 
-/**
- * @brief Structure comportant les informations sur un job terminé.
- * @param pid
- * Pid du processus terminé à tuer.
- * @param next
- * Job suivant dans la liste.
- */
-typedef struct FinJobs FinJobs;
-struct FinJobs {
-    int pid;
-    FinJobs *next;
-};
 
 /**
  * @brief Ajout  d'un job dans la liste.
@@ -60,7 +54,7 @@ struct FinJobs {
  * @param state 
  * Etat de la commande executée.
  */
-void addJob(Jobs **jobs, char **name, int pid, char *state);
+void addJob(Jobs **jobs, char *name, int pid, enum state state, enum ground ground);
 
 /**
  * @brief Trouve si le job de nom name existe dans la liste.
@@ -106,31 +100,10 @@ int deleteJob(Jobs **jobs, Jobs *del);
  */
 void printJobs(Jobs *jobs);
 
-/**
- * @brief Add le pid d'un job terminé dans la liste.
- * @param fj 
- * Liste des jobs terminés.
- * @param pid 
- * Pid du job à ajouter.
- */
-void addFinJob(FinJobs **fj, int pid);
+int jobEnFG(Jobs *jobs);
 
-/**
- * @brief Supprime le pid d'un job terminé dans la liste.
- * @param fj 
- * Liste des jobs terminés.
- * @param pid 
- * Pid à supprimer.
- */
-void deleteFinJob(FinJobs **fj, int pid);
+Jobs *findJobInFG(Jobs *jobs);
 
-/**
- * @brief Affiche les jobs terminés et non tués.
- * 
- * @param jobs 
- * Liste des jobs.
- */
-void printFinJobs(FinJobs *jobs);
-
+Jobs *findJobNameNum(Jobs *jobs, char *id);
 
 #endif

@@ -1,5 +1,8 @@
 #ifndef __EXTERNCMD_H__
 #define __EXTERNCMD_H__
+
+#include "jobs.h"
+
 /**
  * @file externCmd.h
  * @author @OliverMineau
@@ -30,6 +33,6 @@
  * @return int
  * 1 si erreur, 0 sinon.
  */
-int commandeExterne(char **cmd, char *inNom, char *outNom, int pipes[2][2], int deb, int fin);
+int commandeExterne(struct cmdline *l, int n, int pipes[2][2], int deb, int fin, Jobs **jobs);
 
 #endif

@@ -1,6 +1,7 @@
 #ifndef __SIGHANDLER_H__
 #define __SIGHANDLER_H__
 
+#include "shell.h"
 /**
  * @file signalHandlers.h
  * @author @OliverMineau
@@ -13,6 +14,7 @@
  * 
  */
 
+void childHandler(int signum);
 void ctrlCHandler(int sig);
 void ctrlZHandler(int sig);
 

@@ -3,20 +3,23 @@
 #include "csapp.h"
 #include "redirection.h"
 
+#define BUFSIZE 200
+
 int redirectionEntree(char *inNom, int *prevCmdPipe, int deb, int *fd_in){
 	//Si on redirige l'entrée
 	if(inNom && deb==1){
 
-		*fd_in = open(inNom, O_RDONLY);
+		int fd_in = open(inNom, O_RDONLY);
 
-		if(*fd_in==-1){
+		if(fd_in==-1){
 			printf("%s: %s\n",inNom,strerror(errno));
 			return 1;
 		}
-		if(dup2(*fd_in,0)==-1){
+		if(dup2(fd_in,0)==-1){
 			fprintf(stderr,"Erreur de copie de l'entrée\n");
 			return 1;
 		}
+
 	}else if (deb==0){
 
 		//l'entree devient pipeP[0](sortie tube) car on a ecrit depuis pipeP[1](entree tube)
@@ -47,8 +50,11 @@ int redirectionSortie(char *outNom, int *nextCmdPipe, int fin, int deb, int *fd_
 			fprintf(stderr,"Erreur de copie de la sortie\n");
 			return 1;
 		}
+
+
 	}else if (fin==0){
 
+		//Si premiere commande et pas la derniere
 		if(deb==1 && pipe(nextCmdPipe)==-1){
 			fprintf(stderr,"Erreur lors de l'ouverture du pipe\n");
 			return 1;

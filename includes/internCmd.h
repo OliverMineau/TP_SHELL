@@ -71,7 +71,7 @@ int isJobs(struct cmdline *cmd, int n, Jobs *jobs);
  * Liste des jobs en cours.
  * @return int 
  */
-int commandeInterne(struct cmdline *cmd, int n, Jobs *jobs);
+int commandeInterne(struct cmdline *cmd, int n, Jobs *jobs, char *outNom, int pipes[2][2], int deb, int fin);
 
 
 #endif

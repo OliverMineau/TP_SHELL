@@ -3,23 +3,23 @@
 #include <string.h>
 #include <stdio.h>
 
-void addJob(Jobs **jobs, char **name, int pid, char *state){
+void addJob(Jobs **jobs, char *name, int pid, enum state state, enum ground ground){
 
     Jobs *newJob = malloc(sizeof(Jobs));
 
-    char fullCmd[50];
-    fullCmd[0]='\0';
+    /*fullCmd[0]='\0';
     int i=0;
     while(name[i]){
         strcat(fullCmd,name[i]);
         strcat(fullCmd," ");
         i++;
-    }
-    newJob->name = malloc(strlen(fullCmd));
-    newJob->state = malloc(strlen(state));
-    strcpy(newJob->name,fullCmd);
-    strcpy(newJob->state,state);
+    }*/
+
+    newJob->name = malloc(strlen(name));
+    strcpy(newJob->name,name);
+    newJob->state=state;
     newJob->pid=pid;
+    newJob->ground=ground;
 
     if((*jobs)==NULL){
         newJob->num=1;
@@ -66,7 +66,6 @@ int deleteJob(Jobs **jobs, Jobs *del){
     if (*jobs == del) {
         *jobs = del->next;
         free(del->name);
-        free(del->state);
         free(del);
         return 1;
     }
@@ -78,7 +77,6 @@ int deleteJob(Jobs **jobs, Jobs *del){
         if (tmpFils == del) {
             head->next = tmpFils->next;
             free(tmpFils->name);
-            free(tmpFils->state);
             free(tmpFils);
             return 1;
         }
@@ -96,50 +94,50 @@ void printJobs(Jobs *jobs){
     Jobs *tmp=jobs;
     while (tmp!=NULL)
     {
-        printf("[%d] %d %s %s\n",tmp->num,tmp->pid,tmp->state,tmp->name);
+        char *stateName="";
+        switch (tmp->state)
+        {
+        case RUNNING:
+            stateName="Running";
+            break;
+        case STOPPED:
+            stateName="Stopped";
+            break;
+        default:
+            break;
+        }
+        
+        printf("[%d] %d %s %s\n",tmp->num,tmp->pid,stateName,tmp->name);
         tmp=tmp->next;
     }
 }
 
-void addFinJob(FinJobs **fj, int pid){
-    
-    FinJobs *newfj=malloc(sizeof(FinJobs));
-    newfj->pid=pid;
-
-    if((*fj)==NULL){
-        newfj->next=NULL;
-    }else{
-        newfj->next=(*fj);
-    }
-    *fj=newfj;
-}
-
-void deleteFinJob(FinJobs **fj, int pid){
-    
-    FinJobs *head=(*fj);
-    FinJobs *tmpFils=(*fj)->next;
-    if(head->pid==pid){
-        *fj=head->next;
-        free(head);
-        return;
-    }
-    
-    while (tmpFils!=NULL)
-    {
-        if(tmpFils->pid==pid){
-            head->next=tmpFils->next;
-            free(tmpFils);
-            return;
-        }
-        head=head->next;
-        tmpFils=tmpFils->next;
-    }
-}
-
-void printFinJobs(FinJobs *jobs){
+int jobEnFG(Jobs *jobs){
     while (jobs!=NULL){
-        printf("Job %d\n",jobs->pid);
+        if(jobs->ground==FOREGROUND) return 1;
         jobs=jobs->next;
     }
+    return 0;
 }
 
+Jobs *findJobInFG(Jobs *jobs){
+    while (jobs!=NULL){
+        if(jobs->ground==FOREGROUND) return jobs;
+        jobs=jobs->next;
+    }
+    return NULL;
+}
+
+
+Jobs *findJobNameNum(Jobs *jobs, char *id){
+    
+    if(!id) id="1";
+
+    while (jobs!=NULL){
+        char buffer[100];
+        sprintf(buffer, "%d", jobs->num);
+        if(!strcmp(jobs->name,id) || !strcmp(buffer,id)) return jobs;
+        jobs=jobs->next;
+    }
+    return NULL;
+}

@@ -2,17 +2,12 @@
  * Copyright (C) 2002, Simon Nieuviarts
  */
 
-#include <stdio.h>
-#include <stdlib.h>
-#include "readcmd.h"
-#include "csapp.h"
-#include "internCmd.h"
-#include "externCmd.h"
-#include "jobs.h"
-#include "signalHandlers.h"
+#include "shell.h"
+
+Jobs *jobs=NULL;
 
 
-int gestionCommande(struct cmdline *l,int etat, Jobs *jobs){
+int gestionCommande(struct cmdline *l, Jobs **jobs){
 	int i;
 
 	#if DEBUG
@@ -53,10 +48,10 @@ int gestionCommande(struct cmdline *l,int etat, Jobs *jobs){
 	//Pour chaque commande
 	for(int n = 0; n<i; n++){
 		
-		int resCmdInt = commandeInterne(l,n, jobs);
+		int resCmdInt = commandeInterne(l,n, *jobs, l->out,pipes,(n==0?1:0),(n==(i-1)?1:0)==1);
 		if(resCmdInt==0){
 			//Pas une commande interne
-			if(commandeExterne(l->seq[n], l->in, l->out,pipes, (n==0?1:0),(n==(i-1)?1:0))==1) break;
+			if(commandeExterne(l,n,pipes, (n==0?1:0),(n==(i-1)?1:0),jobs)==1) break;
 		}
 		//Commande interne qui ne peut pas etre suivie
 		else if(resCmdInt==-1) break;
@@ -76,10 +71,7 @@ int gestionCommande(struct cmdline *l,int etat, Jobs *jobs){
 			}
 			
 		}
-	}
-	if(etat){
 
-		exit(0);
 	}
 
 	return 0;
@@ -87,9 +79,8 @@ int gestionCommande(struct cmdline *l,int etat, Jobs *jobs){
 
 int main()
 {
-	FinJobs *finjobs=NULL;
-	Jobs *jobs=NULL;
 
+	Signal(SIGCHLD,childHandler);
 	Signal(SIGINT,ctrlCHandler);
 	Signal(SIGTSTP,ctrlZHandler);
 
@@ -113,39 +104,11 @@ int main()
 			continue;
 		}
 		
-		//Si la commande n'est pas en bg
-		if(l->bg==0){
-			gestionCommande(l,0,jobs);
+		gestionCommande(l,&jobs);
 
-		}else{
-			//Si la commande est en bg
-			int pidBgCmd;
-			if((pidBgCmd=Fork()) == 0){
-				gestionCommande(l,1,jobs);
-			}else{
-				addJob(&jobs,l->seq[0],pidBgCmd,"Running");
-				printf("[%d] %d\n",jobs->num,jobs->pid);
-			}
+		while(jobEnFG(jobs)){
+			sleep(1);
 		}
-
-		//Si plusieurs morts en meme temps
-		int jobPidMort;
-		while((jobPidMort=waitpid(-1,NULL,WNOHANG|WUNTRACED))>0){
-				if(findJobByPID(jobs,jobPidMort)){
-					addFinJob(&finjobs,jobPidMort);
-				}
-		}
-
-		while(finjobs!=NULL){
-			Jobs *d;
-			d=findJobByPID(jobs,finjobs->pid);
-
-			printf("[%d]+ Done                    %s\n",d->num,d->name);
-			deleteFinJob(&finjobs,finjobs->pid);
-			deleteJob(&jobs,d);
-			
-		}
-
 
 		#if DEBUG
 		printJobs(jobs);
