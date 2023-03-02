@@ -29,7 +29,11 @@ void commande(char **cmd, char *inNom, char *outNom, int *pipeP, int *pipeActu, 
 		fd_out = open(outNom, O_CREAT | O_RDWR, 0666);
 
 		if(fd_out==-1){
-			fprintf(stderr,"%s: No such file or directory\n",outNom);
+			if(errno == EACCES){
+				fprintf(stderr,"%s: Permission denied.\n", outNom);
+			} else {
+				fprintf(stderr,"%s: No such file or directory\n",outNom);	
+			}
 			return;
 		}
 		if(dup2(fd_out,1)==-1){
@@ -45,7 +49,7 @@ void commande(char **cmd, char *inNom, char *outNom, int *pipeP, int *pipeActu, 
 
 		//la sortie devient pipeActu[1](entree tube)
 		if(dup2(pipeActu[1],1)==-1){
-			fprintf(stderr,"Erreur de copie de l'entrée\n");
+			fprintf(stderr,"Erreur de copie de la sortie\n");
 			return;
 		}
 		Close(pipeActu[1]);
