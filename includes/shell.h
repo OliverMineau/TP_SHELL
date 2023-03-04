@@ -11,7 +11,7 @@
 #include "signalHandlers.h"
 
 /**
- * @file signalHandlers.h
+ * @file shell.h
  * @author @OliverMineau
  * @author @alexisthach
  * @brief 
@@ -22,6 +22,10 @@
  * 
  */
 
+/**
+ * @brief Liste de tous les jobs en cours.
+ * 
+ */
 extern Jobs *jobs;
 
 #endif

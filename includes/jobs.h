@@ -13,7 +13,16 @@
  * 
  */
 
+/**
+ * @brief Etat d'un job.
+ * 
+ */
 enum state {RUNNING,STOPPED};
+
+/**
+ * @brief Plan d'un job.
+ * 
+ */
 enum ground {BACKGROUND,FOREGROUND};
 
 /**
@@ -88,7 +97,7 @@ Jobs *findJobByPID(Jobs *jobs, int pid);
  * @param del 
  * Job a supprimer.
  * @return int 
- * O si job pas supprimé, 1 sinon.
+ * 0 si job pas supprimé, 1 sinon.
  */
 int deleteJob(Jobs **jobs, Jobs *del);
 
@@ -100,10 +109,33 @@ int deleteJob(Jobs **jobs, Jobs *del);
  */
 void printJobs(Jobs *jobs);
 
+/**
+ * @brief Indique si le job est en premier plan.
+ * 
+ * @param jobs 
+ * Liste des jobs.
+ * @return int 
+ */
 int jobEnFG(Jobs *jobs);
 
+/**
+ * @brief Recherche un job en premier plan.
+ * 
+ * @param jobs 
+ * Liste des jobs.
+ * @return Jobs* 
+ */
 Jobs *findJobInFG(Jobs *jobs);
 
+/**
+ * @brief Trouve un job par son nom ou numero.
+ * 
+ * @param jobs 
+ * Liste des jobs.
+ * @param id 
+ * Numero ou nom du job.
+ * @return Jobs* 
+ */
 Jobs *findJobNameNum(Jobs *jobs, char *id);
 
 #endif

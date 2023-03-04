@@ -14,8 +14,25 @@
  * 
  */
 
+/**
+ * @brief Tue et supprime les processus terminés.
+ * 
+ * @param signum 
+ */
 void childHandler(int signum);
+
+/**
+ * @brief Intercepte le signal SIGINT
+ * 
+ * @param sig 
+ */
 void ctrlCHandler(int sig);
+
+/**
+ * @brief Intercepte le signal SIGTSTP
+ * 
+ * @param sig 
+ */
 void ctrlZHandler(int sig);
 
 #endif

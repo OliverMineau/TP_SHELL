@@ -35,4 +35,14 @@
  */
 int commandeExterne(struct cmdline *l, int n, int pipes[2][2], int deb, int fin, Jobs **jobs);
 
+/**
+ * @brief Concatene toutes les commandes en une seule.
+ * 
+ * @param l 
+ * Contient toutes les commandes.
+ * @param nomCommande 
+ * Contient les commandes concatenees.
+ */
+void seqToChar(struct cmdline *l, char *nomCommande);
+
 #endif

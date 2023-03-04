@@ -9,13 +9,13 @@ int redirectionEntree(char *inNom, int *prevCmdPipe, int deb, int *fd_in){
 	//Si on redirige l'entrée
 	if(inNom && deb==1){
 
-		int fd_in = open(inNom, O_RDONLY);
+		*fd_in = open(inNom, O_RDONLY);
 
-		if(fd_in==-1){
+		if(*fd_in==-1){
 			printf("%s: %s\n",inNom,strerror(errno));
 			return 1;
 		}
-		if(dup2(fd_in,0)==-1){
+		if(dup2(*fd_in,0)==-1){
 			fprintf(stderr,"Erreur de copie de l'entrée\n");
 			return 1;
 		}
@@ -50,7 +50,6 @@ int redirectionSortie(char *outNom, int *nextCmdPipe, int fin, int deb, int *fd_
 			fprintf(stderr,"Erreur de copie de la sortie\n");
 			return 1;
 		}
-
 
 	}else if (fin==0){
 

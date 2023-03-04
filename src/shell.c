@@ -3,6 +3,7 @@
  */
 
 #include "shell.h"
+#include "historique.h"
 
 Jobs *jobs=NULL;
 
@@ -48,7 +49,7 @@ int gestionCommande(struct cmdline *l, Jobs **jobs){
 	//Pour chaque commande
 	for(int n = 0; n<i; n++){
 		
-		int resCmdInt = commandeInterne(l,n, *jobs, l->out,pipes,(n==0?1:0),(n==(i-1)?1:0)==1);
+		int resCmdInt = commandeInterne(l,n, jobs, l->out,pipes,(n==0?1:0),(n==(i-1)?1:0)==1);
 		if(resCmdInt==0){
 			//Pas une commande interne
 			if(commandeExterne(l,n,pipes, (n==0?1:0),(n==(i-1)?1:0),jobs)==1) break;

@@ -71,7 +71,32 @@ int isJobs(struct cmdline *cmd, int n, Jobs *jobs);
  * Liste des jobs en cours.
  * @return int 
  */
-int commandeInterne(struct cmdline *cmd, int n, Jobs *jobs, char *outNom, int pipes[2][2], int deb, int fin);
+int commandeInterne(struct cmdline *cmd, int n, Jobs **jobs, char *outNom, int pipes[2][2], int deb, int fin);
 
+/**
+ * @brief Vérifie si la commande donnée doit mettre en premier plan un job.
+ * 
+ * @param cmd 
+ * Structure cmdline contenant les commandes.
+ * @param n 
+ * Position/Numéro de la commande à vérifier.
+ * @param jobs 
+ * Liste des jobs en cours.
+ * @return int 
+ */
+int isFg(struct cmdline *cmd, int n, Jobs *jobs);
+
+/**
+ * @brief  Vérifie si la commande donnée doit mettre en arriere plan un job.
+ * 
+ * @param cmd 
+ * Structure cmdline contenant les commandes.
+ * @param n 
+ * Position/Numéro de la commande à vérifier.
+ * @param jobs 
+ * Liste des jobs en cours.
+ * @return int 
+ */
+int isBg(struct cmdline *cmd, int n, Jobs *jobs);
 
 #endif

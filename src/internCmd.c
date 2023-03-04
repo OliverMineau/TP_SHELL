@@ -66,6 +66,8 @@ int isFg(struct cmdline *cmd, int n, Jobs *jobs){
 			job->state=RUNNING;
 			printf("%s\n",job->name);
 			Kill(job->pid,SIGCONT);
+		}else if(cmd->seq[n][1]!=NULL){
+			printf("fg: %s: no such job\n",cmd->seq[n][1]);
 		}else{
 			printf("fg: current: no such job\n");
 		}
@@ -74,36 +76,36 @@ int isFg(struct cmdline *cmd, int n, Jobs *jobs){
 	return 0;
 }
 
-int commandeInterne(struct cmdline *cmd, int n, Jobs *jobs, char *outNom, int pipes[2][2], int deb, int fin){
+int isBg(struct cmdline *cmd, int n, Jobs *jobs){
+
+	if(!strcmp("bg",cmd->seq[n][0])){
+		Jobs *job;
+		if((job=findJobNameNum(jobs,cmd->seq[n][1]))){
+
+			job->ground=BACKGROUND;
+			job->state=RUNNING;
+			printf("[%d]+ %s &\n",job->num,job->name);
+
+			Kill(job->pid,SIGCONT);
+		}else if(cmd->seq[n][1]!=NULL){
+			printf("bg: %s: no such job\n",cmd->seq[n][1]);
+		}else{
+			printf("bg: current: no such job\n");
+		}
+		return 1;
+	}
+	return 0;
+}
+
+int commandeInterne(struct cmdline *cmd, int n, Jobs **jobs, char *outNom, int pipes[2][2], int deb, int fin){
 
     isQuitShell(cmd, n);
 
-	/*int fd_out;
-	int fd_term = dup(1);
+	if(isChangeDir(cmd, n)) return -1; //Aucune commande ne peut suivre cd
+	if(isJobs(cmd, n, *jobs)) return 1; //Commande peut etre suivie
+	if(isFg(cmd, n, *jobs)) return -1; //Aucune commande ne peut suivre fg
+	if(isBg(cmd, n, *jobs)) return -1; //Aucune commande ne peut suivre bg
 
-	int *nextCmdPipe = pipes[1];
-	
-	int sortieOuverte = (outNom && fin==1);
-
-	if(redirectionSortie(outNom, nextCmdPipe, fin, deb, &fd_out)==1) return -1;*/
-
-
-	int isCd = isChangeDir(cmd, n);
-	int isJ = isJobs(cmd, n, jobs);
-	int isF = isFg(cmd, n, jobs);
-
-
-/*
-	//On ferme fd_out si on l'a ouvert et ajoute le terminal en sortie
-	if(sortieOuverte){
-		Close(fd_out);
-	}
-	dup2(fd_term,1);
-	Close(fd_term);*/
-
-	if(isCd) return -1; //Aucune commande ne peut suivre cd
-	if(isJ) return 1; //Commande peut etre suivie
-	if(isF) return -1; //Aucune commande ne peut suivre fg
 
 	return 0;
 }

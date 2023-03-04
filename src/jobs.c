@@ -7,14 +7,6 @@ void addJob(Jobs **jobs, char *name, int pid, enum state state, enum ground grou
 
     Jobs *newJob = malloc(sizeof(Jobs));
 
-    /*fullCmd[0]='\0';
-    int i=0;
-    while(name[i]){
-        strcat(fullCmd,name[i]);
-        strcat(fullCmd," ");
-        i++;
-    }*/
-
     newJob->name = malloc(strlen(name));
     strcpy(newJob->name,name);
     newJob->state=state;
