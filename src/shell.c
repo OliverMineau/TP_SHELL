@@ -3,7 +3,7 @@
  */
 
 #include "shell.h"
-#include "historique.h"
+//#include "historique.h
 
 Jobs *jobs=NULL;
 

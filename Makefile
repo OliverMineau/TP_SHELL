@@ -13,7 +13,7 @@ ifndef DEBUG
 endif
 
 ifndef TEST
-	TEST=test01.txt
+	TEST=test12.txt
 endif
 
 .PHONY: all, clean, init, testAll, test

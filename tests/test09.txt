@@ -1,0 +1,4 @@
+#
+# test09.txt - Tester une séquence de commande avec 1 pipe et redirection de sortie
+cd temp
+ls | grep .o > sortieTest9.txt

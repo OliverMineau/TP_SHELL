@@ -43,6 +43,10 @@ int redirectionSortie(char *outNom, int *nextCmdPipe, int fin, int deb, int *fd_
 		*fd_out = open(outNom, O_CREAT | O_RDWR, 0666);
 
 		if(*fd_out==-1){
+			if(errno == EACCES){
+				fprintf(stderr,"%s: Permission denied.\n", outNom);
+				exit(1);
+			}
 			printf("%s: %s\n",outNom,strerror(errno));
 			return 1;
 		}

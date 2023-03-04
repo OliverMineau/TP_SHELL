@@ -1,0 +1,5 @@
+#
+# test13.txt - Tester le lancement d'une commande en arrière-plan puis afficher les tâches en cours d'exécution
+cd progTests
+./60sec 
+jobs
