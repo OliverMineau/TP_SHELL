@@ -1,0 +1,5 @@
+#
+# compte_nb_tests.txt - Compte le nombre de tests
+#
+cd tests
+ls | wc -l

@@ -1,0 +1,4 @@
+#
+# _redirection_e_1.txt - Rediriger une entrée incorrecte
+#
+wc <

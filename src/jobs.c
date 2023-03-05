@@ -13,6 +13,7 @@ void addJob(Jobs **jobs, char *name, int pid, enum state state, enum ground grou
     newJob->pid=pid;
     newJob->ground=ground;
 
+    /*Si c'est le premier job*/
     if((*jobs)==NULL){
         newJob->num=1;
         newJob->next=NULL;
@@ -27,6 +28,7 @@ void addJob(Jobs **jobs, char *name, int pid, enum state state, enum ground grou
 
 Jobs *findJobByPID(Jobs *jobs, int pid){
     Jobs *tmp=jobs;
+    /*Cherche dans les jobs le bon pid*/
     while (tmp!=NULL)
     {
         if(tmp->pid == pid){
@@ -39,6 +41,7 @@ Jobs *findJobByPID(Jobs *jobs, int pid){
 
 Jobs *findJobByName(Jobs *jobs, char *name){
     Jobs *tmp=jobs;
+    /*Cherche dans les jobs le bon nom*/
     while (tmp!=NULL)
     {
         if(!strcmp(tmp->name,name)){
@@ -62,17 +65,17 @@ int deleteJob(Jobs **jobs, Jobs *del){
         return 1;
     }
     
-    Jobs *head = *jobs;
-    Jobs *tmpFils = head->next;
+    Jobs *tete = *jobs;
+    Jobs *tmpFils = tete->next;
     
     while (tmpFils != NULL) {
         if (tmpFils == del) {
-            head->next = tmpFils->next;
+            tete->next = tmpFils->next;
             free(tmpFils->name);
             free(tmpFils);
             return 1;
         }
-        head = tmpFils;
+        tete = tmpFils;
         tmpFils = tmpFils->next;
     }
     
@@ -124,9 +127,10 @@ Jobs *findJobInFG(Jobs *jobs){
 Jobs *findJobNameNum(Jobs *jobs, char *id){
     
     if(!id) id="1";
-
+    /*Cherche dans chaque job*/
     while (jobs!=NULL){
         char buffer[100];
+        /*Convertir le job num en char* */
         sprintf(buffer, "%d", jobs->num);
         if(!strcmp(jobs->name,id) || !strcmp(buffer,id)) return jobs;
         jobs=jobs->next;

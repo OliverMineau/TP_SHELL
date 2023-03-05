@@ -1,0 +1,5 @@
+#
+# _redirection_s_1.txt - Rediriger une sortie incorrecte
+#
+cd tests
+wc < redirection_s_1.txt >

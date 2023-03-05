@@ -1,0 +1,8 @@
+#
+# _bg_3.txt - Exécuter la commande interne bg avec aucun processus stoppé
+#
+./progTests/5sec
+TSTP
+jobs
+bg jenexistepas
+jobs

@@ -1,0 +1,5 @@
+#
+# _fg_2.txt - Exécuter la commande interne fg avec un processus en bg mais pas le bon argument
+#
+./progTests/5sec &
+fg 23

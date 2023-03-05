@@ -70,6 +70,9 @@ int isJobs(struct cmdline *cmd, int n, Jobs *jobs);
  * @param jobs 
  * Liste des jobs en cours.
  * @return int 
+ * 1 si c'est une commande interne,
+ * -1 si c'est une commande interne qui ne peut pas etre suivie d'une autre commande,
+ * 0 sinon.
  */
 int commandeInterne(struct cmdline *cmd, int n, Jobs **jobs, char *outNom, int pipes[2][2], int deb, int fin);
 

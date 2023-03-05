@@ -1,0 +1,4 @@
+#
+# _jobs_1.txt - Exécuter la commande interne jobs sans jobs existants
+#
+jobs

@@ -13,8 +13,8 @@
 
 void printShellEnv(){
 	/**Trouver le Current Working Directory
-	 * strlen(getenv("HOME")) : on trouve la taille de l'env et affiche apres
-	 */
+	 * getcwd donne le chemin complet, on enleve le chemin de home avec
+	 * strlen(getenv("HOME")) : on trouve la taille de l'env et affiche a partir de là*/
 	char cwd[1024];
 	getcwd(cwd, sizeof(cwd));
 	int lenHome=strlen(getenv("HOME"));
@@ -25,15 +25,18 @@ void printShellEnv(){
 }
 
 void isQuitShell(struct cmdline *cmd, int n){
+	/*exit/quit*/
 	if(!strcmp("exit",cmd->seq[n][0]) || !strcmp("quit",cmd->seq[n][0])){
 		exit(0);
 	}
 }
 
 int isChangeDir(struct cmdline *cmd, int n){
+	/*cd*/
 	if(!strcmp("cd",cmd->seq[n][0])){
 		char path[1024];
 
+		/*~*/
 		if(cmd->seq[n][1]==NULL || !strcmp(cmd->seq[n][1],"~")){
 			strcpy(path,getenv("HOME"));
 		}else{
@@ -49,6 +52,7 @@ int isChangeDir(struct cmdline *cmd, int n){
 }
 
 int isJobs(struct cmdline *cmd, int n, Jobs *jobs){
+	/*jobs*/
 	if(!strcmp("jobs",cmd->seq[n][0])){
 		printJobs(jobs);
 		return 1;
@@ -57,17 +61,21 @@ int isJobs(struct cmdline *cmd, int n, Jobs *jobs){
 }
 
 int isFg(struct cmdline *cmd, int n, Jobs *jobs){
-
+	/*fg*/
 	if(!strcmp("fg",cmd->seq[n][0])){
 		Jobs *job;
-		if((job=findJobNameNum(jobs,cmd->seq[n][1]))){
 
+		/*On cherche le job*/
+		if((job=findJobNameNum(jobs,cmd->seq[n][1]))){
 			job->ground=FOREGROUND;
 			job->state=RUNNING;
 			printf("%s\n",job->name);
+			/*Redemarre le processus*/
 			Kill(job->pid,SIGCONT);
+
 		}else if(cmd->seq[n][1]!=NULL){
 			printf("fg: %s: no such job\n",cmd->seq[n][1]);
+
 		}else{
 			printf("fg: current: no such job\n");
 		}
@@ -77,18 +85,20 @@ int isFg(struct cmdline *cmd, int n, Jobs *jobs){
 }
 
 int isBg(struct cmdline *cmd, int n, Jobs *jobs){
-
+	/*bg*/
 	if(!strcmp("bg",cmd->seq[n][0])){
 		Jobs *job;
+		/*On cherche le job*/
 		if((job=findJobNameNum(jobs,cmd->seq[n][1]))){
-
 			job->ground=BACKGROUND;
 			job->state=RUNNING;
 			printf("[%d]+ %s &\n",job->num,job->name);
-
+			/*Redemarre le processus*/
 			Kill(job->pid,SIGCONT);
+
 		}else if(cmd->seq[n][1]!=NULL){
 			printf("bg: %s: no such job\n",cmd->seq[n][1]);
+			
 		}else{
 			printf("bg: current: no such job\n");
 		}

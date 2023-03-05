@@ -1,0 +1,4 @@
+#
+# _cmd_1_pipe_2.txt - Exécuter une commande avec un pipe menant sur aucune commmande
+#
+ | grep a
