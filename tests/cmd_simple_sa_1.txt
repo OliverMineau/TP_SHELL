@@ -1,0 +1,4 @@
+#
+# cmd_simple_sa_1.txt - Exécuter une commande sans argument
+#
+ls

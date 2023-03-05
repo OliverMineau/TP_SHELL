@@ -1,0 +1,8 @@
+#
+# jobs_1.txt - Exécuter la commande interne jobs
+#
+./progTests/5sec &
+./progTests/5sec &
+./progTests/5sec &
+./progTests/5sec &
+jobs

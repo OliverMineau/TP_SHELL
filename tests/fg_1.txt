@@ -1,0 +1,8 @@
+#
+# fg_1.txt - Exécuter la commande interne fg
+#
+./5sec &
+echo avant 5 sec
+fg 1
+echo apres 5 sec
+

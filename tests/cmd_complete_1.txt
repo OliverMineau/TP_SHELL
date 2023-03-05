@@ -1,0 +1,7 @@
+#
+# cmd_complete_1.txt - Exécuter plusieures commandes
+#
+./progTests/5sec | wc > /tests/sortie/cmd_complete_1.sortie &
+
+
+

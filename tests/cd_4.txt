@@ -1,0 +1,5 @@
+#
+# cd_4.txt - Exécuter la commande interne cd
+#
+cd ~
+ls

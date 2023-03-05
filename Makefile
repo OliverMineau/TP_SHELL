@@ -12,8 +12,11 @@ ifndef DEBUG
 	DEBUG=0
 endif
 
-ifndef TEST
-	TEST=test12.txt
+ifndef T
+	TEST=exit.txt
+else
+	TEST=$(T).txt
+	EXEC=test
 endif
 
 .PHONY: all, clean, init, testAll, test
@@ -38,19 +41,22 @@ $(OBJDIR)/%.o: $(SRCDIR)/%.c $(INCLUDEDIR)/%.h
 $(EXEC):$(OBJS)
 	$(CC) -o $@ $(LDFLAGS) $^ $(LIBS)
 
-
+#Test seul, make test=02 pour tester le fichier test02.txt 
 test:
-	./sdriver.pl -t $(TESTDIR)/$(TEST) -s ./shell
+	./sdriver.pl -v -t $(TESTDIR)/$(TEST) -s ./shell
 
+#Test tous les fichiers tests
 testAll:
 	for num in $(TESTDIR)/*; do\
 		./sdriver.pl -t $$num -s ./shell;\
 		echo;\
 	done
 
+#Creation du dossier vide contenant les fichiers temporaires.
 init:
 	mkdir -p temp
 
+#Creation de la documentation et copie du pdf
 doxy:
 	doxygen $(DOXDIR)/doxy-convert.conf
 	cd $(DOXDIR)/latex;make;cp refman.pdf ../MINI_SHELL_DOC_MINEAU_THACH.pdf;

@@ -1,5 +1,0 @@
-#
-# test12.txt - Tester le lancement d'une commande en arrière-plan puis la ramener en premier plan
-cd progTests
-./5sec &
-fg 1

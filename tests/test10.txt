@@ -1,4 +1,0 @@
-#
-# test10.txt - Tester une séquence de commande avec redirection d'entrée et de sortie
-cd tests
-sort < test01.txt > sortieTest10.txt

@@ -1,0 +1,5 @@
+#
+# exit.txt - Tester la commande exit
+#
+exit
+WAIT

@@ -1,0 +1,4 @@
+#
+# cmd_simple_sa_2.txt - Exécuter une commande sans argument
+#
+echo Bonjour

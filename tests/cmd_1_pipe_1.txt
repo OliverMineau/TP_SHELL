@@ -1,0 +1,4 @@
+#
+# cmd_1_pipe_1.txt - Exécuter deux commandes avec un pipe
+#
+ls | grep .o

@@ -1,0 +1,4 @@
+#
+# cmd_simple_sa_3.txt - Exécuter une commande sans argument
+#
+pwd

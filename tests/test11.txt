@@ -1,5 +1,0 @@
-#
-# test11.txt - Tester le lancement d'une commande en arrière-plan
-cd progTests
-./60sec & 
-

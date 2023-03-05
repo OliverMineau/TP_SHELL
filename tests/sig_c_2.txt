@@ -1,0 +1,7 @@
+#
+# sig_c_2.txt - Exécuter la commande Ctrl+C
+#
+./progTests/60sec
+SLEEP 2
+QUIT
+

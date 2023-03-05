@@ -1,0 +1,6 @@
+#
+# redirection_s_2.txt - Rediriger une sortie
+#
+cd tests
+mkdir sorties
+echo C'est une redirection > sorties/redirection_s_2.sortie

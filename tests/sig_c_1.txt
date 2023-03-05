@@ -1,0 +1,7 @@
+#
+# sig_c_1.txt - Exécuter la commande Ctrl+C
+#
+./progTests/5sec 
+SLEEP 1
+QUIT
+echo 5sec tué

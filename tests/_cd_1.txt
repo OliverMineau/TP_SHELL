@@ -1,0 +1,4 @@
+#
+# _cd_1.txt - Exécuter la commande interne cd avec un dossier inexistant
+#
+cd dossierInexistant

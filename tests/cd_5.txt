@@ -1,0 +1,5 @@
+#
+# cd_5.txt - Exécuter la commande interne cd
+#
+cd ./tests
+ls

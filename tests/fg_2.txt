@@ -1,0 +1,10 @@
+#
+# fg_2.txt - Exécuter la commande interne fg
+#
+./testsProg/5sec &
+echo 1
+./testsProg/5sec &
+echo 2
+./testsProg/5sec &
+fg
+echo 3

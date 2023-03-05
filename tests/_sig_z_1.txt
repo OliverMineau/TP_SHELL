@@ -1,0 +1,4 @@
+#
+# _sig_z_1.txt - Exécuter la commande Ctrl+Z qui ne devrait pas fonctionner
+#
+TSTP

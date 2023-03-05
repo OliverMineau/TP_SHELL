@@ -1,0 +1,5 @@
+#
+# cmd_simple_a_2.txt - Exécuter une commande avec argument
+#
+cd tests
+wc -w cmd_simple_a_2.txt

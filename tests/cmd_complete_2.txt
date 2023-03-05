@@ -1,0 +1,9 @@
+#
+# cmd_complete_2.txt - Exécuter plusieures commandes
+#
+cd tests
+sort < cmd_complete_2.txt > sortie/cmd_complete_2.sortie
+
+
+
+

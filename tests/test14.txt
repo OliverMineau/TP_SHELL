@@ -1,5 +1,0 @@
-#
-# test14.txt - Tester le lancement de deux commandes en arrière plan
-cd progTests
-./60sec & ./infini &
-jobs

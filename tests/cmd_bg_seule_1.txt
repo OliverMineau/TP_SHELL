@@ -1,0 +1,4 @@
+#
+# cmd_bg_seule_1.txt - Exécuter une commande en arriere plan
+#
+ls -l &

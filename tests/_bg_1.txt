@@ -1,0 +1,4 @@
+#
+# _bg_1.txt - Exécuter la commande interne bg avec aucun processus stoppé
+#
+bg

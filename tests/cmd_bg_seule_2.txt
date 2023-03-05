@@ -1,0 +1,4 @@
+#
+# cmd_bg_seule_2.txt - Exécuter une commande en arriere plan
+#
+./progTests/5sec &

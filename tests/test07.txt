@@ -1,5 +1,0 @@
-#
-# test07.txt - Tester commande background
-cd progTests
-./5sec | grep -o . | sort |tr -d "\n" &
-echo On attend 5secondes

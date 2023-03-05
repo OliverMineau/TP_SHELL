@@ -1,0 +1,10 @@
+#
+# sig_z_2.txt - Exécuter la commande Ctrl+Z
+#
+./5sec &
+echo 5sec en arriere plan
+SLEEP 1
+fg
+SLEEP 1
+TSTP
+echo 5sec en arret

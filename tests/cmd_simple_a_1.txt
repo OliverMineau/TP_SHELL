@@ -1,0 +1,4 @@
+#
+# cmd_simple_a_1.txt - Exécuter une commande avec argument
+#
+ls -l

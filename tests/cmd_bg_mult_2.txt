@@ -1,0 +1,4 @@
+#
+# cmd_bg_mult_2.txt - Exécuter une commande en arriere plan
+#
+cat < ./tests/cmd_bg_mult_2.txt | sort &

@@ -1,0 +1,5 @@
+#
+# _sig_c_1.txt - Exécuter la commande Ctrl+C qui ne devrait pas fonctionner
+#
+QUIT
+

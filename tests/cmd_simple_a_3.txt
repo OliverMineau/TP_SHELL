@@ -1,0 +1,5 @@
+#
+# cmd_simple_a_3.txt - Exécuter une commande avec argument
+#
+cd tests
+grep # cmd_simple_a_3.txt

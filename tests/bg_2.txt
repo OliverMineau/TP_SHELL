@@ -1,0 +1,14 @@
+#
+# bg_1.txt - Exécuter la commande interne bg
+#
+./progTests/5sec
+SLEEP
+TSTP
+jobs
+SLEEP 6
+bg
+jobs
+
+
+
+

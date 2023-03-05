@@ -1,0 +1,5 @@
+#
+# cmd_1_pipe_2.txt - Exécuter deux commandes avec un pipe
+#
+cd tests
+cat cmd_1_pipe_2.txt | sort

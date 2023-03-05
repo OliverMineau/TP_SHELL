@@ -1,3 +1,0 @@
-#
-# test08.txt - Tester une séquence de commande avec 0 pipe et redirection de sortie
-echo "Bonjour" > sortieTest8.txt
