@@ -1,5 +1,5 @@
 #
 # cmd_bg_mult_1.txt - Exécuter plusieurs commandes en arriere plan
 #
-.testsProg/5sec | grep -o . | sort |tr -d "\n" &
+./progTests/5sec | grep -o . | sort |tr -d "\n" &
 echo Affichage pendant l'execution de 5sec

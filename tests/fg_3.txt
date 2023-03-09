@@ -1,6 +1,6 @@
 #
 # fg_3.txt - Exécuter la commande interne fg
 #
-./testsProg/5sec &
+./progTests/5sec &
 fg ./progTests/5sec
 echo 3
